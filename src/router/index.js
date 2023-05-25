@@ -1,5 +1,6 @@
 // Composables
 import {createRouter, createWebHistory} from 'vue-router'
+import dashboardView from "@/views/DashboardView.vue";
 
 const routes = [
   {
@@ -17,7 +18,7 @@ const routes = [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/DashboardView.vue'),
+        component: dashboardView
       },
       {
         path: 'jobs/:id',

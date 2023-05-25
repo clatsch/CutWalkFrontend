@@ -4,7 +4,7 @@
       <h3>{{ job.jobName }}</h3>
     </router-link>
 
-    <h5>{{ job.materialId }}</h5>
+    <h5>{{ job.materialId.name }} - {{ job.cutOptionsId.thickness }}mm</h5>
   </div>
 </template>
 
