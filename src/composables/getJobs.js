@@ -1,4 +1,5 @@
 import {ref} from "vue";
+import {fetchData} from "@/api";
 
 const getJobs = () => {
   const jobs = ref([])
@@ -6,22 +7,13 @@ const getJobs = () => {
 
   const load = async () => {
     try {
-      // simulate delay
-      // await new Promise(resolve => {
-      //   setTimeout(resolve, 2000)
-      // })
-      let data = await fetch('http://127.0.0.1:3000/api/v1/jobs')
-      if (!data.ok) {
-        throw Error('no data available')
-      }
-      let importedData = await data.json()
-      jobs.value = importedData.data
-      console.log(jobs.value)
+      const data = await fetchData('jobs/', {credentials: 'include'});
+      jobs.value = data.data;
     } catch (err) {
-      error.value = err.message
-      console.log(error.value)
+      error.value = err.message;
+      console.log(error.value);
     }
-  }
+  };
 
   return {jobs, error, load}
 }

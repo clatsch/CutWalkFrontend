@@ -1,4 +1,5 @@
 import {ref} from "vue";
+import {fetchData} from "@/api";
 
 const getMachines = () => {
   const machines = ref([])
@@ -6,17 +7,14 @@ const getMachines = () => {
 
   const load = async () => {
     try {
-      let data = await fetch('http://127.0.0.1:3000/api/v1/machines')
-      if (!data.ok) {
-        throw Error('no data available')
-      }
-      let importedData = await data.json()
-      machines.value = importedData.data
+      const data = await fetchData('machines/', {credentials: 'include'});
+      machines.value = data.data;
     } catch (err) {
-      error.value = err.message
-      console.log(error.value)
+      error.value = err.message;
+      console.log(error.value);
     }
-  }
+  };
+
   return {machines, error, load}
 }
 

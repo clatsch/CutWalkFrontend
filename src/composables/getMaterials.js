@@ -6,7 +6,9 @@ const getMaterials = () => {
 
   const loadMaterials = async () => {
     try {
-      let data = await fetch('http://127.0.0.1:3000/api/v1/materials')
+      let data = await fetch('http://127.0.0.1:3000/api/v1/materials', {
+        credentials: 'include'
+      })
       if (!data.ok) {
         throw Error('no data available')
       }

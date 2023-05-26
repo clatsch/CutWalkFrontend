@@ -1,8 +1,14 @@
 // Composables
 import {createRouter, createWebHistory} from 'vue-router'
 import dashboardView from "@/views/DashboardView.vue";
+import loginView from "@/views/LoginView.vue";
 
 const routes = [
+  {
+    path: '/login',
+    name: 'LoginView',
+    component: loginView
+  },
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
@@ -30,6 +36,17 @@ const routes = [
         path: 'create',
         name: 'CreateJob',
         component: () => import(/* webpackChunkName: "home" */ '@/views/CreateJob.vue'),
+      },
+      {
+        path: 'machines',
+        name: 'Machines',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/MachinesView.vue'),
+      },
+      {
+        path: 'machines/:id',
+        name: 'MachineDetails',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/MachineDetails.vue'),
+        props: true
       }
     ],
   },

@@ -124,7 +124,8 @@ export default {
 
         fetch('http://127.0.0.1:3000/api/v1/files/upload', {
           method: "POST",
-          body: formData
+          body: formData,
+          credentials: 'include'
         })
           .then((res) => {
             if (res.ok) {
@@ -198,7 +199,8 @@ export default {
       await fetch('http://127.0.0.1:3000/api/v1/jobs', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(job)
+        body: JSON.stringify(job),
+        credentials: 'include'
       })
       router.push({name: 'Dashboard'})
     }
