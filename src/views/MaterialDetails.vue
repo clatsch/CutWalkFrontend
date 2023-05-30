@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-alert color="error" icon="$error" v-if="error">{{ error }}</v-alert>
-    <div v-if="machine">
-      <h3>Name: {{ machine.name }}</h3>
+    <div v-if="material">
+      <h3>Name: {{ material.name }}</h3>
     </div>
     <div v-else>
       <LoadingSpinner />
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import getMachine from "@/composables/getMachine";
+import getMaterial from "@/composables/getMaterial.js";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {useRoute} from "vue-router";
 
@@ -20,12 +20,12 @@ export default {
   props: ['id'],
   setup(props) {
     const route = useRoute()
-    const {machine, error, load} = getMachine(props.id)
+    const {material, error, load} = getMaterial(props.id)
     // const {machine, error, load} = getMachine(route.params.id)
 
     load()
 
-    return {machine, error}
+    return {material, error}
   },
 }
 

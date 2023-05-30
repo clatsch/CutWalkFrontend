@@ -66,7 +66,7 @@
       <v-card>Bounding box height: {{ boundingBox.height }}</v-card>
 
       <div v-if="selectedQuality">
-        <div>Price: {{ price }}</div>
+        <div>Price: {{ price.toFixed(2) }}</div>
       </div>
 
 
@@ -153,7 +153,7 @@ export default {
     const {machines, error: errorMachines, load: loadMachines} = getMachines();
     loadMachines()
 
-    const {materials, errorMaterials, loadMaterials} = getMaterials()
+    const {materials, error: errorMaterials, load: loadMaterials} = getMaterials()
     loadMaterials()
 
     const {cutOptionsByMachine, errorCutOptionsByMachine, loadCutOptionsByMachine} = getCutOptionsByMachine()
@@ -183,6 +183,7 @@ export default {
     });
 
     const handleSubmit = async () => {
+      const timestamp = new Date().toISOString();
       const job = {
         jobName: jobName.value,
         fileId: fileId.value,
@@ -190,9 +191,11 @@ export default {
         materialId: selectedMaterial.value,
         cutOptionsId: selectedCutOption.value,
         totalLength: totalLength.value,
+        contourCount: contourCount.value,
         price: price.value,
         quality: selectedQuality.value,
-        tags: tags.value
+        tags: tags.value,
+        date: timestamp
 
       }
 

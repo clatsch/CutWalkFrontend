@@ -23,21 +23,29 @@ export default {
         password: password.value,
       }
 
-      fetch('http://127.0.0.1:3000/api/v1/users/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(user),
-        credentials: 'include'
-      }).then(
-        router.push({name: 'Dashboard'})
-      ).catch(error => {
-          // Handle any errors that occurred during the request
-          console.error('Error:', error);
+      try {
+        const response = await fetch('http://127.0.0.1:3000/api/v1/users/login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(user),
+          credentials: 'include'
         });
 
-    }
+        if (response.ok) {
+          await response.json();
+          router.push({name: 'Dashboard'});
+        } else {
+          throw new Error('Login failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
     return {email, password, handleSubmit}
   }
 }
 
 </script>
+
+

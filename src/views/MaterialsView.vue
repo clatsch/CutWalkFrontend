@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-alert color="error" icon="$error" v-if="error">{{ error }}</v-alert>
-    <h1>Machines</h1>
-    <div v-if="machines.length">
-      <MachineList :machines="machines"/>
+    <h1>Materials</h1>
+    <div v-if="materials.length">
+      <MaterialList :materials="materials"/>
     </div>
     <div v-else>
       <LoadingSpinner/>
@@ -14,16 +14,16 @@
 <script>
 
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
-import getMachines from "@/composables/getMachines";
-import MachineList from "@/components/MachineList.vue";
+import getMaterials from "@/composables/getMaterials";
+import MaterialList from "@/components/MaterialList.vue";
 
 export default {
   name: 'MachinesView',
-  components: {MachineList, LoadingSpinner},
+  components: {MaterialList, LoadingSpinner},
   setup() {
-    const {machines, error, load} = getMachines()
+    const {materials, error, load} = getMaterials()
     load()
-    return {machines, error}
+    return {materials, error}
   }
 }
 </script>

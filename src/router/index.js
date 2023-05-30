@@ -1,14 +1,8 @@
 // Composables
 import {createRouter, createWebHistory} from 'vue-router'
 import dashboardView from "@/views/DashboardView.vue";
-import loginView from "@/views/LoginView.vue";
 
 const routes = [
-  {
-    path: '/login',
-    name: 'LoginView',
-    component: loginView
-  },
   {
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
@@ -20,6 +14,14 @@ const routes = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+      },
+      {
+        path: '/login',
+        name: 'LoginView',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "home" */ '@/views/LoginView.vue'),
       },
       {
         path: 'dashboard',
@@ -46,6 +48,17 @@ const routes = [
         path: 'machines/:id',
         name: 'MachineDetails',
         component: () => import(/* webpackChunkName: "home" */ '@/views/MachineDetails.vue'),
+        props: true
+      },
+      {
+        path: 'materials',
+        name: 'Materials',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/MaterialsView.vue'),
+      },
+      {
+        path: 'materials/:id',
+        name: 'MaterialDetails',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/MaterialDetails.vue'),
         props: true
       }
     ],

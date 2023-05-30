@@ -1,12 +1,14 @@
 <template>
-  <v-alert color="error" icon="$error" v-if="error">{{ error }}</v-alert>
-  <h1>Dashboard</h1>
-  <div v-if="jobs.length">
-  <JobList :jobs="jobs"/>
-  </div>
-  <div v-else>
-<LoadingSpinner />
-  </div>
+  <v-container>
+    <v-alert color="error" icon="$error" v-if="error">{{ error }}</v-alert>
+    <h1>Dashboard</h1>
+    <div v-if="jobs.length">
+        <JobList :jobs="jobs"/>
+    </div>
+    <div v-else>
+      <LoadingSpinner />
+    </div>
+  </v-container>
 
 
 </template>
@@ -27,17 +29,4 @@ export default {
     return {jobs, error}
   }
 }
-
-// data() {
-// return {
-//   jobs: []
-// }
-// },
-// mounted() {
-// fetch('http://127.0.0.1:3000/api/v1/jobs')
-//   .then(res => res.json())
-//   .then(data => this.jobs = data.data.data)
-//   .catch(err => console.log(err.message))
-// }
-// }
 </script>
