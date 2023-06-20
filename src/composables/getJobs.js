@@ -1,13 +1,13 @@
-import {ref} from "vue";
-import {fetchData} from "@/api";
+import { ref } from "vue";
+import { fetchData } from "@/api";
 
-const getJobs = () => {
-  const jobs = ref([])
+const getJobs = (userId) => {
+  const jobs = ref([]);
   const error = ref(null);
 
   const load = async () => {
     try {
-      const data = await fetchData('jobs/', {credentials: 'include'});
+      const data = await fetchData(`jobs/?userId=${userId}`, { credentials: "include" });
       jobs.value = data.data;
     } catch (err) {
       error.value = err.message;
@@ -15,7 +15,8 @@ const getJobs = () => {
     }
   };
 
-  return {jobs, error, load}
-}
+  return { jobs, error, load };
+};
 
-export default getJobs
+export default getJobs;
+

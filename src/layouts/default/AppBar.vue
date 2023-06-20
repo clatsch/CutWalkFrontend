@@ -9,6 +9,7 @@
       <v-btn :to="{ name: 'CreateJob' }" class="px-5">CreateJob</v-btn>
       <v-btn v-if="isAdmin" :to="{ name: 'Machines' }" class="px-5">Machines</v-btn>
       <v-btn v-if="isAdmin" :to="{ name: 'Materials' }" class="px-5">Materials</v-btn>
+      <v-btn v-if="isAdmin" :to="{ name: 'CutOptions' }" class="px-5">Cut Options</v-btn>
       <v-btn @click="handleLogout">Log Out</v-btn>
     </div>
   </v-app-bar>

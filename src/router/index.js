@@ -10,17 +10,11 @@ const routes = [
       {
         path: '',
         name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
       },
       {
         path: '/login',
         name: 'LoginView',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "home" */ '@/views/LoginView.vue'),
       },
       {
@@ -31,34 +25,55 @@ const routes = [
       {
         path: 'jobs/:id',
         name: 'JobDetails',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/JobDetails.vue'),
+        component: () => import('@/views/JobDetails.vue'),
         props: true
       },
       {
         path: 'create',
         name: 'CreateJob',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/CreateJob.vue'),
+        component: () => import('@/views/CreateJob.vue'),
       },
       {
         path: 'machines',
         name: 'Machines',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/MachinesView.vue'),
+        component: () => import('@/views/MachinesView.vue'),
       },
       {
         path: 'machines/:id',
         name: 'MachineDetails',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/MachineDetails.vue'),
+        component: () => import('@/views/MachineDetails.vue'),
         props: true
       },
       {
         path: 'materials',
         name: 'Materials',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/MaterialsView.vue'),
+        component: () => import('@/views/MaterialsView.vue'),
+      },
+      {
+        path: 'materials/new',
+        name: 'NewMaterial',
+        component: () => import('@/views/MaterialNew.vue'),
       },
       {
         path: 'materials/:id',
-        name: 'MaterialDetails',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/MaterialDetails.vue'),
+        name: 'EditMaterial',
+        component: () => import('@/views/MaterialEdit.vue'),
+        props: true
+      },
+      {
+        path: 'cutoptions',
+        name: 'CutOptions',
+        component: () => import('@/views/CutOptionsView.vue')
+      },
+      {
+        path: 'cutoptions/new',
+        name: 'NewCutOption',
+        component: () => import('@/views/CutOptionNew.vue')
+      },
+      {
+        path: 'cutoptions/:id',
+        name: 'EditCutOption',
+        component: () => import('@/views/CutOptionEdit.vue'),
         props: true
       }
     ],
