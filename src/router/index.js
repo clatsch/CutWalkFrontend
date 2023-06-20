@@ -1,6 +1,17 @@
 // Composables
 import {createRouter, createWebHistory} from 'vue-router'
-import dashboardView from "@/views/DashboardView.vue";
+
+import Home from '@/views/Home.vue';
+import LoginView from '@/views/LoginView.vue';
+import DashboardView from "@/views/DashboardView.vue";
+
+const requireAuth = (store) => (to, from, next) => {
+  if (store.getters.getIsLoggedIn) {
+    next();
+  } else {
+    next({ name: 'Home' });
+  }
+};
 
 const routes = [
   {
@@ -10,23 +21,24 @@ const routes = [
       {
         path: '',
         name: 'Home',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+        component: Home,
       },
       {
-        path: '/login',
+        path: 'login',
         name: 'LoginView',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/LoginView.vue'),
+        component: LoginView,
       },
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: dashboardView
+        component: DashboardView,
+        beforeEnter: requireAuth
       },
       {
         path: 'jobs/:id',
         name: 'JobDetails',
         component: () => import('@/views/JobDetails.vue'),
-        props: true
+        props: true,
       },
       {
         path: 'create',

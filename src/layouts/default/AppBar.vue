@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat >
+  <v-app-bar>
     <v-app-bar-title>
       <v-icon icon="mdi-circle-slice-4"/>
       CutWalk
@@ -10,17 +10,21 @@
       <v-btn v-if="isAdmin" :to="{ name: 'Machines' }" class="px-5">Machines</v-btn>
       <v-btn v-if="isAdmin" :to="{ name: 'Materials' }" class="px-5">Materials</v-btn>
       <v-btn v-if="isAdmin" :to="{ name: 'CutOptions' }" class="px-5">Cut Options</v-btn>
-      <v-btn @click="handleLogout">Log Out</v-btn>
+      <v-btn v-if="isLoggedIn" @click="handleLogout">Log Out</v-btn>
     </div>
   </v-app-bar>
 </template>
 
 <script>
+import { useStore } from 'vuex';
 import router from '@/router';
 
 export default {
-  props: { isAdmin: Boolean },
   setup() {
+    const store = useStore();
+
+    const isLoggedIn = store.getters.getIsLoggedIn;
+    const isAdmin = store.getters.getRole === 'admin';
     const handleLogout = async () => {
       try {
         // Perform the logout logic
@@ -28,13 +32,20 @@ export default {
           credentials: 'include'
         });
         console.log('Logged out successfully');
-        router.push({name: 'Home'});
+        store.commit('setCurrentUser', null); // Reset the current user to null
+        store.commit('setIsLoggedIn', false); // Update the isLoggedIn state in Vuex
+        store.commit('setRole', null); // Reset the role to null
+        store.commit('setAuthToken', null); // Reset the authToken to null
+        store.commit('setError', null); // Reset the error to null
+        await router.push({ name: 'Home' });
       } catch (err) {
         console.error('Error:', err);
       }
     };
 
     return {
+      isLoggedIn,
+      isAdmin,
       handleLogout
     };
   }

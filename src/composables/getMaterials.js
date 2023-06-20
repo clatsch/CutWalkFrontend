@@ -1,14 +1,18 @@
 import {ref} from "vue";
 
-const getMaterials = () => {
+const getMaterials = (authToken) => {
   const materials = ref([])
   const error = ref(null);
 
   const load = async () => {
     try {
-      let data = await fetch('http://127.0.0.1:3000/api/v1/materials', {
-        credentials: 'include'
-      })
+      const config = {
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+      let data = await fetch('http://127.0.0.1:3000/api/v1/materials', config)
       if (!data.ok) {
         throw Error('no data available')
       }

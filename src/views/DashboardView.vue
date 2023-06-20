@@ -2,47 +2,43 @@
   <v-container>
     <v-alert color="error" icon="$error" v-if="error">{{ error }}</v-alert>
     <h1>Dashboard</h1>
-    <div v-if="jobs.length">
-        <JobList :jobs="jobs"/>
+    <div v-if="loadedJobs.length">
+      <JobList :jobs="loadedJobs" />
     </div>
     <div v-else>
       <LoadingSpinner />
     </div>
   </v-container>
-
-
 </template>
 
 <script>
-
+import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+import getJobs from '@/composables/getJobs';
 import JobList from "@/components/JobList.vue";
-import getJobs from "@/composables/getJobs";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
-import { fetchData } from "@/api";
-import {onMounted, ref} from "vue";
 
 export default {
-  name: "DashboardView",
-  components: { JobList, LoadingSpinner },
+  components: {LoadingSpinner, JobList},
+  // ...component configuration
+
   setup() {
-    const currentUser = ref(null);
-    const jobs = ref([]);
+    const store = useStore();
+    const loadedJobs = ref([]);
     const error = ref(null);
 
-    const load = async () => {
+    const loadJobs = async () => {
       try {
-        const response = await fetchData("user/isloggedin", {
-          credentials: "include",
-        });
-
-        if (response.data.isLoggedIn) {
-          currentUser.value = response.data;
-          const { jobs, error } = getJobs(currentUser.value.id);
-          await jobs.load();
-          jobs.value = jobs.jobs;
-          error.value = jobs.error;
+        // Get the current user from the Vuex store
+        const currentUser = store.getters.getCurrentUser;
+        if (currentUser) {
+          const authToken = store.getters.getAuthToken;
+          const { jobs, error, load } = getJobs(currentUser._id, authToken);
+          await load();
+          loadedJobs.value = jobs.value; // Assign to loadedJobs, not jobs
+          error.value = error;
         } else {
-          // User is not logged in, handle accordingly
+          console.log('NOT AVAILABLE')
         }
       } catch (err) {
         error.value = err.message;
@@ -50,11 +46,9 @@ export default {
       }
     };
 
-    onMounted(load);
+    onMounted(loadJobs);
 
-    return { jobs, error };
+    return { loadedJobs, error }; // Return loadedJobs, not jobs
   },
 };
-
-
 </script>

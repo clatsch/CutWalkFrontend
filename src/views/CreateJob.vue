@@ -82,11 +82,13 @@ import getMachines from "@/composables/getMachines";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import getCutOptionsByMachine from "@/composables/getCutOptionsByMachine";
 import getMaterials from "@/composables/getMaterials";
+import {useStore} from "vuex";
 
 
 export default {
   components: {LoadingSpinner},
   setup() {
+    const store = useStore();
     const jobName = ref('');
     const fileId = ref('');
     const file = ref('');
@@ -103,6 +105,7 @@ export default {
     const price = ref(0);
 
     const router = useRouter();
+    const authToken = store.getters.getAuthToken;
 
     const handleKeydown = () => {
       tag.value = tag.value.replace(/\s/g, '') // remove all whitespace
@@ -125,7 +128,9 @@ export default {
         fetch('http://127.0.0.1:3000/api/v1/files/upload', {
           method: "POST",
           body: formData,
-          credentials: 'include'
+          credentials: 'include', headers: {
+            Authorization: `Bearer ${authToken}`, // Include the token in the request headers
+          },
         })
           .then((res) => {
             if (res.ok) {
@@ -150,13 +155,13 @@ export default {
       }
     };
 
-    const {machines, error: errorMachines, load: loadMachines} = getMachines();
+    const {machines, error: errorMachines, load: loadMachines} = getMachines(authToken);
     loadMachines()
 
-    const {materials, error: errorMaterials, load: loadMaterials} = getMaterials()
+    const {materials, error: errorMaterials, load: loadMaterials} = getMaterials(authToken)
     loadMaterials()
 
-    const {cutOptionsByMachine, errorCutOptionsByMachine, loadCutOptionsByMachine} = getCutOptionsByMachine()
+    const {cutOptionsByMachine, errorCutOptionsByMachine, loadCutOptionsByMachine} = getCutOptionsByMachine(authToken)
 
     watch([selectedMachine, selectedMaterial], async ([selectedMachine, selectedMaterial]) => {
       if (selectedMachine && selectedMaterial) {
@@ -183,6 +188,8 @@ export default {
     });
 
     const handleSubmit = async () => {
+      const userId = store.getters.getCurrentUser._id;
+      console.log(userId)
       const timestamp = new Date().toISOString();
       const job = {
         jobName: jobName.value,
@@ -195,13 +202,16 @@ export default {
         price: price.value,
         quality: selectedQuality.value,
         tags: tags.value,
-        date: timestamp
-
+        date: timestamp,
+        userId: userId,
       }
 
       await fetch('http://127.0.0.1:3000/api/v1/jobs', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`
+        },
         body: JSON.stringify(job),
         credentials: 'include'
       })

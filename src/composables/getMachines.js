@@ -1,13 +1,19 @@
 import {ref} from "vue";
 import {fetchData} from "@/api";
 
-const getMachines = () => {
+const getMachines = (authToken) => {
   const machines = ref([])
   const error = ref(null);
 
   const load = async () => {
     try {
-      const data = await fetchData('machines/', {credentials: 'include'});
+      const config = {
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+      const data = await fetchData('machines/', config);
       machines.value = data.data;
     } catch (err) {
       error.value = err.message;
