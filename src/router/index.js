@@ -4,6 +4,11 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Home from '@/views/Home.vue';
 import LoginView from '@/views/LoginView.vue';
 import DashboardView from "@/views/DashboardView.vue";
+import CutOptionsView from "@/views/CutOptionsView.vue";
+import EditMaterial from '@/views/MaterialEdit.vue';
+import MachinesView from "@/views/MachinesView.vue";
+
+
 
 const requireAuth = (store) => (to, from, next) => {
   if (store.getters.getIsLoggedIn) {
@@ -48,12 +53,17 @@ const routes = [
       {
         path: 'machines',
         name: 'Machines',
-        component: () => import('@/views/MachinesView.vue'),
+        component: MachinesView,
+      },
+      {
+        path: 'machines/new',
+        name: 'NewMachine',
+        component: () => import('@/views/MachineNew.vue'),
       },
       {
         path: 'machines/:id',
-        name: 'MachineDetails',
-        component: () => import('@/views/MachineDetails.vue'),
+        name: 'EditMachine',
+        component: () => import('@/views/MachineEdit.vue'),
         props: true
       },
       {
@@ -69,13 +79,13 @@ const routes = [
       {
         path: 'materials/:id',
         name: 'EditMaterial',
-        component: () => import('@/views/MaterialEdit.vue'),
+        component: EditMaterial,
         props: true
       },
       {
         path: 'cutoptions',
         name: 'CutOptions',
-        component: () => import('@/views/CutOptionsView.vue')
+        component: CutOptionsView,
       },
       {
         path: 'cutoptions/new',

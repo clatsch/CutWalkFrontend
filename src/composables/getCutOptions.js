@@ -19,7 +19,6 @@ const getCutOptions = () => {
     try {
       await fetchData(`cutoptions/${cutOptionId}`, {
         method: "DELETE",
-        // headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
     } catch (deleteError) {

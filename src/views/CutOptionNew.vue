@@ -17,7 +17,7 @@
       <v-text-field label="Fine" type="number" v-model="fine" suffix="mm/min"></v-text-field>
       <v-text-field label="xFine" type="number" v-model="xFine" suffix="mm/min"></v-text-field>
       <v-btn type="submit">Save</v-btn>
-      <v-btn @click="saveAndClose">Save and close</v-btn>
+      <v-btn class="mx-2" @click="saveAndClose">Save and close</v-btn>
     </v-form>
   </v-sheet>
 
@@ -28,14 +28,17 @@
 import {onMounted, ref} from "vue";
 import getMaterials from "@/composables/getMaterials";
 import router from "@/router";
-import getMachines from "@/composables/getMachines";
+import getMachines from "@/composables/machines/getMachines";
+import {useStore} from "vuex";
 
 export default {
   name: 'NewCutOption',
 
   setup() {
-    const {machines, error: errorMachines, load: loadMachines} = getMachines();
-    const {materials, error: errorMaterials, load: loadMaterials} = getMaterials();
+    const store = useStore();
+    const authToken = store.getters.getAuthToken;
+    const {machines, error: errorMachines, load: loadMachines} = getMachines(authToken);
+    const {materials, error: errorMaterials, load: loadMaterials} = getMaterials(authToken);
     const inputRules = [(value) => !!value || 'Input is required'];
     const selectedMaterial = ref('');
     const selectedMachine = ref('');
@@ -89,7 +92,7 @@ export default {
 
     const saveAndClose = async () => {
       await saveCutOption();
-      router.push({name: 'CutOptions'});
+      await router.push({name: 'CutOptions'});
     };
 
     return {

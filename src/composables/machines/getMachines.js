@@ -1,9 +1,11 @@
 import {ref} from "vue";
 import {fetchData} from "@/api";
 
+
 const getMachines = (authToken) => {
   const machines = ref([])
   const error = ref(null);
+
 
   const load = async () => {
     try {
