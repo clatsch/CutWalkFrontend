@@ -10,8 +10,9 @@
       <v-text-field label="Length" type="number" v-model="maxLength" :rules="inputRules" suffix="mm"></v-text-field>
       <v-text-field label="Height" type="number" v-model="maxHeight" :rules="inputRules" suffix="mm"></v-text-field>
 
-      <v-btn type="submit">Save</v-btn>
-      <v-btn class="mx-2" @click="saveAndClose">Save and close</v-btn>
+      <v-btn color="primary" @click="saveAndClose">Save and close</v-btn>
+      <v-btn class="mx-2" type="submit">Save</v-btn>
+      <v-btn @click="cancel">Cancel</v-btn>
     </v-form>
   </v-sheet>
 
@@ -83,6 +84,10 @@ export default {
       await router.push({name: 'Machines'});
     };
 
+    const cancel = async () => {
+      await router.push({name: 'Machines'});
+    }
+
     return {
       name,
       type,
@@ -93,6 +98,7 @@ export default {
       typeOptions,
       saveMachine,
       saveAndClose,
+      cancel,
       inputRules,
     };
   }

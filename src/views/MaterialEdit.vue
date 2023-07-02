@@ -6,8 +6,9 @@
       <v-text-field label="Name" type="text" v-model="name"></v-text-field>
       <v-select label="Type" v-model="type" :items="typeOptions"></v-select>
 
-      <v-btn type="submit">Save</v-btn>
-      <v-btn class="mx-2" @click="saveAndClose">Save and close</v-btn>
+      <v-btn color="primary" @click="saveAndClose">Save and close</v-btn>
+      <v-btn class="mx-2" type="submit">Save</v-btn>
+      <v-btn @click="cancel">Cancel</v-btn>
     </v-form>
   </v-sheet>
 
@@ -72,6 +73,10 @@ export default {
       await router.push({name: 'Materials'});
     };
 
+    const cancel = async () => {
+      await router.push({name: 'Materials'});
+    }
+
     return {
       material,
       name,
@@ -79,6 +84,7 @@ export default {
       typeOptions,
       saveMaterial,
       saveAndClose,
+      cancel,
       error,
     };
   }

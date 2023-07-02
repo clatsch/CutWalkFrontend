@@ -10,6 +10,7 @@ import MachinesView from "@/views/MachinesView.vue";
 import CutOptionNew from "@/views/CutOptionNew.vue";
 import MaterialNew from "@/views/MaterialNew.vue";
 import CutOptionEdit from "@/views/CutOptionEdit.vue";
+import MaterialsView from "@/views/MaterialsView.vue";
 
 
 
@@ -72,12 +73,12 @@ const routes = [
       {
         path: 'materials',
         name: 'Materials',
-        component: () => import('@/views/MaterialsView.vue'),
+        component: MaterialsView,
       },
       {
         path: 'materials/new',
         name: 'NewMaterial',
-        component: MaterialNew.vue,
+        component: MaterialNew,
       },
       {
         path: 'materials/:id',

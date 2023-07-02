@@ -15,8 +15,10 @@
       <v-text-field label="Medium" type="number" v-model="medium" suffix="mm/min"></v-text-field>
       <v-text-field label="Fine" type="number" v-model="fine" suffix="mm/min"></v-text-field>
       <v-text-field label="xFine" type="number" v-model="xFine" suffix="mm/min"></v-text-field>
-      <v-btn type="submit">Save</v-btn>
-      <v-btn class="mx-2" @click="saveAndClose">Save and close</v-btn>
+
+      <v-btn color="primary" @click="saveAndClose">Save and close</v-btn>
+      <v-btn class="mx-2" type="submit">Save</v-btn>
+      <v-btn @click="cancel">Cancel</v-btn>
     </v-form>
   </v-sheet>
 
@@ -109,6 +111,10 @@ export default {
       await router.push({name: 'CutOptions'});
     };
 
+    const cancel = async () => {
+      await router.push({name: 'CutOptions'});
+    }
+
     return {
       cutOption,
       selectedMaterial,
@@ -124,6 +130,7 @@ export default {
       xFine,
       saveCutOption,
       saveAndClose,
+      cancel,
       error,
       errorMaterials
     };

@@ -1,8 +1,8 @@
 <template>
-  <v-app-bar>
+  <v-app-bar :elevation="2" flat>
     <v-app-bar-title>
-      <v-icon icon="mdi-circle-slice-4"/>
-      CutWalk
+      <v-img width="28px" src="../../../public/logo-32x32.png"></v-img>
+      <h3>CutWalk</h3>
     </v-app-bar-title>
     <div class="button-container">
       <v-btn :to="{ name: 'Dashboard' }" class="px-5">Dashboard</v-btn>

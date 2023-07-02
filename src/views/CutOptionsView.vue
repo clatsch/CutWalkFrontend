@@ -10,8 +10,6 @@
             <td></td>
             <td>{{ item.columns.materialId.name }}</td>
             <td>{{ item.columns.thickness }}</td>
-            <td>{{ item.columns.abrasiveFlow }}</td>
-            <td>{{ item.columns.pressure }}</td>
             <td>{{ item.columns.xRough }}</td>
             <td>{{ item.columns.rough }}</td>
             <td>{{ item.columns.medium }}</td>
@@ -79,8 +77,6 @@ export default {
     const tableHeaders = [
       { title: 'Material', key: 'materialId' },
       { title: 'Thickness', key: 'thickness' },
-      { title: 'Abrasive Flow', key: 'abrasiveFlow' },
-      { title: 'Pressure', key: 'pressure' },
       { title: 'xRough', key: 'xRough', value: 'quality.xRough' },
       { title: 'Rough', key: 'rough', value: 'quality.rough' },
       { title: 'Medium', key: 'medium', value: 'quality.medium' },

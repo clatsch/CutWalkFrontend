@@ -20,11 +20,14 @@ export default createVuetify({
   theme: {
     defaultTheme: 'light',
     themes: {
-      dark: {
-        primary: '#1976D2',
-        secondary: '#FFA726',
-        accent: '#82B1FF',
-        error: '#FF5252',
+      light: {
+        colors: {
+          primary: '#6702ff',
+          secondary: '#02fff7',
+          accent: '#82B1FF',
+          error: '#ff6c6c',
+        }
+
         // Add more theme colors or modify existing ones as needed
       },
     },

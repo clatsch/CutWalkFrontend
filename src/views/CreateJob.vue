@@ -1,12 +1,11 @@
 <template>
-  <v-sheet width="680" class="mx-auto">
+  <v-sheet width="680" class="mx-auto py-10">
+    <v-alert class="my-4" color="error" icon="$error" v-if="error">{{ error }}</v-alert>
     <v-form @submit.prevent="handleSubmit">
       <v-file-input label="File input" @change="handleFileUpload"></v-file-input>
-      <v-container>
-        <p>Total Length {{ totalLength }} mm</p>
+      <v-container v-if="fileUploaded">
+        <p>Total Length: {{ totalLength.toFixed(1) }} mm</p>
         <p>Contours: {{ contourCount }}</p>
-        <p>Bounding box width: {{ boundingBox.width }}</p>
-        <p>Bounding box height: {{ boundingBox.height }}</p>
       </v-container>
       <div v-if="fileUploaded">
         <v-select
@@ -62,12 +61,13 @@
           <v-chip>{{ tag }}</v-chip>
         </div>
       </v-row>
-      <div v-if="selectedQuality">
+      <div class="my-4" v-if="selectedQuality">
         <h3>Price: {{ price.toFixed(2) }} CHF exkl. VAT</h3>
       </div>
 
 
-      <v-btn :disabled="price <= 0" type="submit" block class="mt-2">Submit</v-btn>
+      <v-btn color="primary" :disabled="price <= 0" type="submit" class="mt-5">Submit</v-btn>
+      <v-btn class="mt-5 mx-2" @click="cancel">Cancel</v-btn>
     </v-form>
   </v-sheet>
 </template>
@@ -81,6 +81,7 @@ import getMaterials from "@/composables/materials/getMaterials";
 import {useStore} from "vuex";
 
 
+
 export default {
   setup() {
     const store = useStore();
@@ -90,14 +91,14 @@ export default {
     const fileUploaded = ref('')
     const tag = ref('');
     const tags = ref([]);
-    const boundingBox = ref([]);
-    const contourCount = ref('');
-    const totalLength = ref('');
+    const contourCount = ref(0);
+    const totalLength = ref(0);
     const selectedMachine = ref('')
     const selectedMaterial = ref('')
     const selectedCutOption = ref('')
     const selectedQuality = ref(null);
     const price = ref(0);
+    const error = ref('')
 
     const router = useRouter();
     const authToken = store.getters.getAuthToken;
@@ -121,6 +122,7 @@ export default {
     }
 
     const handleFileUpload = (event) => {
+      error.value = '';
       const uploadedFile = event.target.files[0];
       const allowedExtensions = ['dxf'];
       const fileExtension = uploadedFile.name.split('.').pop();
@@ -134,7 +136,7 @@ export default {
           method: "POST",
           body: formData,
           credentials: 'include', headers: {
-            Authorization: `Bearer ${authToken}`, // Include the token in the request headers
+            Authorization: `Bearer ${authToken}`,
           },
         })
           .then((res) => {
@@ -148,15 +150,14 @@ export default {
           }).then((data) => {
           fileId.value = data.id;
           totalLength.value = data.totalLength;
-          boundingBox.value = data.boundingBox;
           contourCount.value = data.contourCount;
         })
           .catch((err) => {
             console.error(err);
-            // Handle error condition
+            error.value = err.message
           });
       } else {
-        console.error("Not a DXF file! Please upload only DXF files...");
+        error.value = "Not a DXF file! Please upload only DXF files...";
       }
     };
 
@@ -186,8 +187,8 @@ export default {
         const handling = 55
 
         price.value =
-          totalLength.value / selectedValue * 60 / 3600 * 110 +
-          contourCount.value * piercing * 60 / 3600 * 110 +
+          totalLength.value / selectedValue * 60 / 3600 * selectedMachine.value.rate +
+          contourCount.value * piercing * 60 / 3600 * selectedMachine.value.rate +
           handling
       }
     });
@@ -238,14 +239,18 @@ export default {
       return ['xRough', 'rough', 'medium', 'fine', 'xFine'].includes(property);
     };
 
+    const cancel = async () => {
+      await router.push({name: 'Dashboard'});
+    }
+
 
     return {
-      jobName, file, tags, tag, fileUploaded, totalLength, contourCount, boundingBox,
+      jobName, file, tags, tag, fileUploaded, totalLength, contourCount,
       machines, selectedMachine, errorMachines,
       materials, selectedMaterial, errorMaterials,
       cutOptionsByMachine, errorCutOptionsByMachine, selectedCutOption,
       selectedQuality, generateLabel, isQualityOption,
-      handleKeydown, handleFileUpload, handleSubmit,
+      handleKeydown, handleFileUpload, handleSubmit, cancel, error,
       price
     }
   }

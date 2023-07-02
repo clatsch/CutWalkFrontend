@@ -5,6 +5,7 @@
     <v-main>
       <router-view />
     </v-main>
+    <v-footer class="text-caption">Diplomarbeit Cla Tschenett - NDS Applikationsentwicklung, ibW Höhere Fachschule Südostschweiz - Juli 2023</v-footer>
   </v-app>
 </template>
 
