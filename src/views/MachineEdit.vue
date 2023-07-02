@@ -4,7 +4,8 @@
     <h1>Edit Machine</h1>
     <v-form @submit.prevent="saveMachine">
       <v-text-field label="Name" type="text" v-model="name"></v-text-field>
-      <v-text-field label="Type" type="text" v-model="type"></v-text-field>
+      <v-select label="Type" v-model="type" :items="typeOptions"></v-select>
+      <v-text-field label="Hourly Rate" type="number" v-model="rate" suffix="CHF"></v-text-field>
       <v-text-field label="Width" type="number" v-model="maxWidth" suffix="mm"></v-text-field>
       <v-text-field label="Length" type="number" v-model="maxLength" suffix="mm"></v-text-field>
       <v-text-field label="Height" type="number" v-model="maxHeight" suffix="mm"></v-text-field>
@@ -37,6 +38,8 @@ export default {
     const {machine, load, error} = getMachine(props.id, authToken);
     const name = ref('');
     const type = ref('');
+    const typeOptions = ref(['CNC Router', 'Waterjet', 'Laser Cutter']);
+    const rate = ref('')
     const maxWidth = ref('');
     const maxLength = ref('');
     const maxHeight = ref('');
@@ -45,16 +48,18 @@ export default {
       await load();
       name.value = machine.value.name;
       type.value = machine.value.type;
+      rate.value = machine.value.rate;
       maxWidth.value = machine.value.maxWidth;
       maxLength.value = machine.value.maxLength;
       maxHeight.value = machine.value.maxHeight;
     });
 
-    const saveMaterial = async () => {
+    const saveMachine = async () => {
       const timestamp = new Date().toISOString();
       const machineData = {
         name: name.value,
         type: type.value,
+        rate: rate.value,
         maxWidth: maxWidth.value,
         maxLength: maxLength.value,
         maxHeight: maxHeight.value,
@@ -79,7 +84,7 @@ export default {
     };
 
     const saveAndClose = async () => {
-      await saveMaterial();
+      await saveMachine();
       await router.push({name: 'Machines'});
     };
 
@@ -87,10 +92,12 @@ export default {
       machine,
       name,
       type,
+      typeOptions,
+      rate,
       maxWidth,
       maxLength,
       maxHeight,
-      saveMaterial,
+      saveMachine,
       saveAndClose,
       error,
     };

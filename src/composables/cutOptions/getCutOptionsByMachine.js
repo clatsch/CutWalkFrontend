@@ -1,13 +1,19 @@
 import {ref} from "vue";
 
-const getCutOptionsByMachine = () => {
+const getCutOptionsByMachine = (authToken) => {
   const cutOptionsByMachine = ref([])
   const errorCutOptionsByMachine = ref(null);
 
   const loadCutOptionsByMachine = async (machineId, materialId) => {
 
     try {
-      let response  = await fetch(`http://127.0.0.1:3000/api/v1/cutoptions?machineId=${machineId}&materialId=${materialId}`)
+      const config = {
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+      let response  = await fetch(`http://127.0.0.1:3000/api/v1/cutoptions?machineId=${machineId}&materialId=${materialId}`, config)
       if (!response .ok) {
         throw Error('no data available')
       }

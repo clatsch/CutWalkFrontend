@@ -7,6 +7,9 @@ import DashboardView from "@/views/DashboardView.vue";
 import CutOptionsView from "@/views/CutOptionsView.vue";
 import EditMaterial from '@/views/MaterialEdit.vue';
 import MachinesView from "@/views/MachinesView.vue";
+import CutOptionNew from "@/views/CutOptionNew.vue";
+import MaterialNew from "@/views/MaterialNew.vue";
+import CutOptionEdit from "@/views/CutOptionEdit.vue";
 
 
 
@@ -74,7 +77,7 @@ const routes = [
       {
         path: 'materials/new',
         name: 'NewMaterial',
-        component: () => import('@/views/MaterialNew.vue'),
+        component: MaterialNew.vue,
       },
       {
         path: 'materials/:id',
@@ -90,12 +93,12 @@ const routes = [
       {
         path: 'cutoptions/new',
         name: 'NewCutOption',
-        component: () => import('@/views/CutOptionNew.vue')
+        component: CutOptionNew,
       },
       {
         path: 'cutoptions/:id',
         name: 'EditCutOption',
-        component: () => import('@/views/CutOptionEdit.vue'),
+        component: CutOptionEdit,
         props: true
       }
     ],

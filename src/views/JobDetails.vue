@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import getJob from "@/composables/getJob";
+import getJob from "@/composables/jobs/getJob";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {useRoute} from "vue-router";
 

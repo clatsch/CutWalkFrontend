@@ -9,6 +9,7 @@
           <tr>
             <td>{{ item.columns.name }}</td>
             <td>{{ item.columns.type }}</td>
+            <td>{{ item.columns.rate }}</td>
             <td>{{ item.columns.maxWidth }}</td>
             <td>{{ item.columns.maxLength }}</td>
             <td>{{ item.columns.maxHeight }}</td>
@@ -59,7 +60,7 @@ import {useStore} from "vuex";
 
 export default {
   name: 'MaterialEdit',
-  components: {LoadingSpinner},
+  components: { LoadingSpinner },
   setup() {
     const store = useStore();
     const authToken = store.getters.getAuthToken;
@@ -73,6 +74,7 @@ export default {
     const tableHeaders = [
       {title: 'Machine', key: 'name'},
       {title: 'Type', key: 'type'},
+      {title: 'Hourly Rate [CHF]', key: 'rate'},
       {title: 'Width [mm]', key: 'maxWidth'},
       {title: 'Length [mm]', key: 'maxLength'},
       {title: 'Height [mm]', key: 'maxHeight'},
@@ -81,8 +83,6 @@ export default {
 
     onMounted(() => {
       load();
-      //todo: trigger machines load with store...do something in then if needed
-      // store.getMachines().then(....)
     });
 
     const editMachine = (item) => {
@@ -97,7 +97,6 @@ export default {
 
     const deleteSelectedMachine = async () => {
       const itemId = itemToDelete.value.selectable._id;
-      console.log(itemId)
       try {
         await deleteMachineById(authToken, itemId);
         await load();

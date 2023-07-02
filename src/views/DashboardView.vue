@@ -14,7 +14,7 @@
 <script>
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import getJobs from '@/composables/getJobs';
+import getJobs from '@/composables/jobs/getJobs';
 import JobList from "@/components/JobList.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 

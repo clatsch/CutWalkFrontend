@@ -8,7 +8,7 @@ function createFetchResponse(data) {
 }
 
 // Import the getJobs function from the file you provided
-import getJobs from "@/composables/getJobs";
+import getJobs from "@/composables/jobs/getJobs";
 
 describe('Job Service', () => {
   beforeEach(() => {

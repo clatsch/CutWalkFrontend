@@ -25,9 +25,10 @@
 
 <script>
 import {onMounted, ref} from "vue";
-import getCutOption from "@/composables/getCutOption";
-import getMaterials from "@/composables/getMaterials";
+import getCutOption from "@/composables/cutOptions/getCutOption";
+import getMaterials from "@/composables/materials/getMaterials";
 import router from "@/router";
+import {useStore} from "vuex";
 
 export default {
   name: 'CutOptionEdit',
@@ -38,8 +39,10 @@ export default {
     }
   },
   setup(props) {
-    const {cutOption, load, error} = getCutOption(props.id);
-    const {materials, error: errorMaterials, load: loadMaterials} = getMaterials();
+    const store = useStore();
+    const authToken = store.getters.getAuthToken;
+    const {cutOption, load, error} = getCutOption(props.id, authToken);
+    const {materials, error: errorMaterials, load: loadMaterials} = getMaterials(authToken);
     const selectedMaterial = ref('');
     const thickness = ref('');
     const abrasiveFlow = ref('');
@@ -87,7 +90,10 @@ export default {
       try {
         await fetch(`http://127.0.0.1:3000/api/v1/cutoptions/${props.id}`, {
           method: 'PATCH',
-          headers: {'Content-Type': 'application/json'},
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`
+          },
           body: JSON.stringify(cutOptionData),
           credentials: 'include'
         });

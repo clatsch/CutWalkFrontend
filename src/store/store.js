@@ -1,7 +1,6 @@
 import {createStore} from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import router from "@/router";
-import {loadMachines, machinesApi} from "@/composables/services/machinesService";
 
 const store = createStore({
   state: {
@@ -47,12 +46,6 @@ const store = createStore({
           commit('setAuthToken', data.token);
           commit('setError', null);
 
-          //todo: setting defautl header token for machines api
-          // axios.defaults.headers = {
-          machinesApi.defaults.headers = {
-            "Authorization":  `Bearer ${data.token}`
-          }
-
           await router.push({name: 'Dashboard'});
         } else {
           throw new Error('Login failed');
@@ -62,13 +55,6 @@ const store = createStore({
         throw error;
       }
     },
-    // ...other actions
-    getMachines({commit}){
-      return loadMachines().then(machines => {
-        //todo: setup stote for machines
-        commit("setMachines", machines);
-      })
-    }
 
   },
   getters: {

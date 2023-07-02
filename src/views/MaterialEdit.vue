@@ -17,7 +17,7 @@
 <script>
 import {onMounted, ref} from "vue";
 import router from "@/router";
-import getMaterial from "@/composables/getMaterial";
+import getMaterial from "@/composables/materials/getMaterial";
 import {useStore} from "vuex";
 
 export default {

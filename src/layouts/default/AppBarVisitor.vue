@@ -9,7 +9,6 @@
       <v-btn text href="#section2" @click="scrollToSection('#section2')">How it Works</v-btn>
       <v-btn text href="#section3" @click="scrollToSection('#section3')">Machines</v-btn>
       <v-btn text href="#section4" @click="scrollToSection('#section4')">Materials</v-btn>
-      <v-btn text href="#section5" @click="scrollToSection('#section5')">Pricing</v-btn>
       <v-btn text to="/login" class="px-5 login-button">Login</v-btn>
     </div>
   </v-app-bar>

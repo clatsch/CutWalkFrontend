@@ -76,8 +76,8 @@
 import {ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import getMachines from "@/composables/machines/getMachines";
-import getCutOptionsByMachine from "@/composables/getCutOptionsByMachine";
-import getMaterials from "@/composables/getMaterials";
+import getCutOptionsByMachine from "@/composables/cutOptions/getCutOptionsByMachine";
+import getMaterials from "@/composables/materials/getMaterials";
 import {useStore} from "vuex";
 
 

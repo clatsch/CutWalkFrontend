@@ -50,8 +50,8 @@
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
-import getMaterials from "@/composables/getMaterials";
-import deleteMaterial from "@/composables/deleteMaterial";
+import getMaterials from "@/composables/materials/getMaterials";
+import deleteMaterial from "@/composables/materials/deleteMaterial";
 import {useStore} from "vuex";
 
 

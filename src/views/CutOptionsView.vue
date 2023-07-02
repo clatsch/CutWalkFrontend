@@ -44,7 +44,7 @@
           <v-btn color="primary" text @click="dialogOpen = false">
             Cancel
           </v-btn>
-          <v-btn color="red" text @click="deleteCutOption(item); dialogOpen = false">
+          <v-btn color="red" text @click="deleteSelectedCutOption(item); dialogOpen = false">
             Delete
           </v-btn>
         </v-card-actions>
@@ -55,17 +55,22 @@
 
 <script>
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
-import getCutOptions from "@/composables/getCutOptions";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import getCutOptions from "@/composables/cutOptions/getCutOptions";
+import deleteCutOption from "@/composables/cutOptions/deleteCutOption";
+import {useStore} from "vuex";
 
 export default {
   name: 'CutOptionsView',
   components: { LoadingSpinner },
   setup() {
+    const store = useStore();
+    const authToken = store.getters.getAuthToken;
     const searchQuery = ref('');
     const router = useRouter();
-    const { cutOptions, error, load, deleteCutOptionById } = getCutOptions();
+    const { cutOptions, error, load } = getCutOptions(authToken);
+    const {error: deleteError, deleteCutOptionById} = deleteCutOption()
     const dialogOpen = ref(false);
     const itemToDelete = ref(null);
 
@@ -101,11 +106,11 @@ export default {
       dialogOpen.value = true;
     };
 
-    const deleteCutOption = async () => {
+    const deleteSelectedCutOption = async () => {
       const itemId = itemToDelete.value.selectable._id;
       try {
-        await deleteCutOptionById(itemId);
-        load(); // Reload the cut options after deletion
+        await deleteCutOptionById(authToken, itemId);
+        await load(); // Reload the cut options after deletion
       } catch (error) {
         console.error(error);
       }
@@ -115,7 +120,18 @@ export default {
       router.push({ name: "NewCutOption" });
     };
 
-    return { cutOptions, error, tableHeaders, searchQuery, groupBy, editCutOption, confirmDeleteCutOption, deleteCutOption, createNewCutOption, dialogOpen,
+    return {
+      cutOptions,
+      error,
+      deleteError,
+      tableHeaders,
+      searchQuery,
+      groupBy,
+      editCutOption,
+      confirmDeleteCutOption,
+      deleteSelectedCutOption,
+      dialogOpen,
+      createNewCutOption,
       itemToDelete, };
   },
 };
