@@ -15,7 +15,7 @@ import { useStore } from 'vuex';
 
 export default {
   setup() {
-    const email = ref('john@doe.com');
+    const email = ref('admin@admin.com');
     const password = ref('test1234');
     const error = ref('');
     const store = useStore();

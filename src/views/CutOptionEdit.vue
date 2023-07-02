@@ -16,7 +16,7 @@
       <v-text-field label="Fine" type="number" v-model="fine" suffix="mm/min"></v-text-field>
       <v-text-field label="xFine" type="number" v-model="xFine" suffix="mm/min"></v-text-field>
       <v-btn type="submit">Save</v-btn>
-      <v-btn @click="saveAndClose">Save and close</v-btn>
+      <v-btn class="mx-2" @click="saveAndClose">Save and close</v-btn>
     </v-form>
   </v-sheet>
 
@@ -100,7 +100,7 @@ export default {
 
     const saveAndClose = async () => {
       await saveCutOption();
-      router.push({name: 'CutOptions'});
+      await router.push({name: 'CutOptions'});
     };
 
     return {

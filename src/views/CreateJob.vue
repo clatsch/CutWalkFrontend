@@ -1,76 +1,73 @@
 <template>
   <v-sheet width="680" class="mx-auto">
-    <v-file-input label="File input" @change="handleFileUpload"></v-file-input>
-    <div v-if="machines.length">
-      <v-select
-        v-model="selectedMachine"
-        :hint="`${selectedMachine.name}, ${selectedMachine.type}`"
-        :items="machines"
-        item-value="name"
-        item-title="type"
-        label="Select a machine"
-        return-object
-      ></v-select>
-    </div>
-    <div v-if="selectedMachine">
-      <v-select
-        v-model="selectedMaterial"
-        :items="materials"
-        item-value="_id"
-        item-title="name"
-        label="Select a material"
-        return-object
-      ></v-select>
-    </div>
-    <div v-if="selectedMaterial">
-      <v-select
-        v-model="selectedCutOption"
-        :items="cutOptionsByMachine"
-        item-value="_id"
-        item-title="thickness"
-        label="Select a thickness"
-        return-object
-      ></v-select>
-    </div>
-    <div v-if="selectedCutOption">
-      <v-radio-group v-model="selectedQuality">
-        <template v-for="(value, property) in selectedCutOption.quality">
-          <v-radio
-            v-if="isQualityOption(property)"
-            :key="property"
-            :label="generateLabel(property, value)"
-            :value="property"
-          ></v-radio>
-        </template>
-      </v-radio-group>
-    </div>
-    <div v-else>
-      <LoadingSpinner/>
-    </div>
+    <v-form @submit.prevent="handleSubmit">
+      <v-file-input label="File input" @change="handleFileUpload"></v-file-input>
+      <v-container>
+        <p>Total Length {{ totalLength }} mm</p>
+        <p>Contours: {{ contourCount }}</p>
+        <p>Bounding box width: {{ boundingBox.width }}</p>
+        <p>Bounding box height: {{ boundingBox.height }}</p>
+      </v-container>
+      <div v-if="fileUploaded">
+        <v-select
+          v-model="selectedMachine"
+          :hint="`${selectedMachine.name}, ${selectedMachine.type}`"
+          :items="machines"
+          item-value="name"
+          item-title="type"
+          label="Select a machine"
+          return-object
+        ></v-select>
 
-    <v-form @submit.prevent="handleSubmit" v-if="fileUploaded">
-      <v-text-field v-model="jobName" label="Job Name"></v-text-field>
-      <v-text-field
-        v-model="tag"
-        label="Tags"
-        @keydown.enter.prevent="handleKeydown"
-      ></v-text-field>
+      </div>
+      <div v-if="selectedMachine">
+        <v-select
+          v-model="selectedMaterial"
+          :items="materials"
+          item-value="_id"
+          item-title="name"
+          label="Select a material"
+          return-object
+        ></v-select>
+      </div>
+      <div v-if="selectedMaterial">
+        <v-select
+          v-model="selectedCutOption"
+          :items="cutOptionsByMachine"
+          item-value="_id"
+          item-title="thickness"
+          label="Select a thickness"
+          return-object
+          no-data-text="No cutting options available for this material"
+        ></v-select>
+      </div>
+      <div v-if="selectedCutOption">
+        <v-radio-group v-model="selectedQuality">
+          <template v-for="(value, property) in selectedCutOption.quality">
+            <v-radio
+              v-if="isQualityOption(property)"
+              :key="property"
+              :label="generateLabel(property, value)"
+              :value="property"
+            ></v-radio>
+          </template>
+        </v-radio-group>
+      </div>
+
+
+      <v-text-field v-if="selectedQuality" v-model="jobName" label="Job Name"></v-text-field>
+      <v-text-field v-if="jobName" v-model="tag" label="Tags" @keydown.enter.prevent="handleKeydown"></v-text-field>
       <v-row justify="center" align="center">
         <div v-for="tag in tags" :key="tag">
           <v-chip>{{ tag }}</v-chip>
         </div>
       </v-row>
-      <v-card>Total Length {{ totalLength }}</v-card>
-      <v-card>Contours: {{ contourCount }}</v-card>
-      <v-card>Bounding box width: {{ boundingBox.width }}</v-card>
-      <v-card>Bounding box height: {{ boundingBox.height }}</v-card>
-
       <div v-if="selectedQuality">
-        <div>Price: {{ price.toFixed(2) }}</div>
+        <h3>Price: {{ price.toFixed(2) }} CHF exkl. VAT</h3>
       </div>
 
 
-      <v-btn type="submit" block class="mt-2">Submit</v-btn>
+      <v-btn :disabled="price <= 0" type="submit" block class="mt-2">Submit</v-btn>
     </v-form>
   </v-sheet>
 </template>
@@ -78,15 +75,13 @@
 <script>
 import {ref, watch} from "vue";
 import {useRouter} from "vue-router";
-import getMachines from "@/composables/getMachines";
-import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import getMachines from "@/composables/machines/getMachines";
 import getCutOptionsByMachine from "@/composables/getCutOptionsByMachine";
 import getMaterials from "@/composables/getMaterials";
 import {useStore} from "vuex";
 
 
 export default {
-  components: {LoadingSpinner},
   setup() {
     const store = useStore();
     const jobName = ref('');
@@ -106,6 +101,16 @@ export default {
 
     const router = useRouter();
     const authToken = store.getters.getAuthToken;
+
+    watch(selectedMachine, () => {
+      selectedMaterial.value = null;
+      price.value = 0;
+    })
+
+    watch(selectedMaterial, () => {
+      selectedCutOption.value = null;
+      price.value = 0;
+    });
 
     const handleKeydown = () => {
       tag.value = tag.value.replace(/\s/g, '') // remove all whitespace
@@ -189,7 +194,6 @@ export default {
 
     const handleSubmit = async () => {
       const userId = store.getters.getCurrentUser._id;
-      console.log(userId)
       const timestamp = new Date().toISOString();
       const job = {
         jobName: jobName.value,

@@ -1,10 +1,13 @@
 <template>
 
   <v-sheet width="680" class="mx-auto">
-    <h1>New Material</h1>
-    <v-form @submit.prevent="saveMaterial">
+    <h1>New Machine</h1>
+    <v-form @submit.prevent="saveMachine">
       <v-text-field label="Name" type="text" v-model="name"></v-text-field>
-      <v-select label="Type" v-model="type" :items="typeOptions"></v-select>
+      <v-text-field label="Type" type="text" v-model="type"></v-text-field>
+      <v-text-field label="Width" type="number" v-model="maxWidth" suffix="mm"></v-text-field>
+      <v-text-field label="Length" type="number" v-model="maxLength" suffix="mm"></v-text-field>
+      <v-text-field label="Height" type="number" v-model="maxHeight" suffix="mm"></v-text-field>
 
       <v-btn type="submit">Save</v-btn>
       <v-btn class="mx-2" @click="saveAndClose">Save and close</v-btn>
@@ -20,32 +23,37 @@ import router from "@/router";
 import {useStore} from "vuex";
 
 export default {
-  name: 'NewMaterial',
+  name: 'NewMachine',
 
   setup() {
     const store = useStore();
     const authToken = store.getters.getAuthToken;
     const name = ref('');
     const type = ref('');
-    const typeOptions = ref(['composite', 'foam', 'metal', 'plastic', 'stone', 'wood', 'other']);
+    const maxWidth = ref(null);
+    const maxLength = ref(null);
+    const maxHeight = ref(null);
 
 
-    const saveMaterial = async () => {
+    const saveMachine = async () => {
       const timestamp = new Date().toISOString();
-      const materialData = {
+      const machineData = {
         name: name.value,
         type: type.value,
+        maxWidth: maxWidth.value,
+        maxLength: maxLength.value,
+        maxHeight: maxHeight.value,
         updated: timestamp
       };
 
       try {
-        await fetch(`http://127.0.0.1:3000/api/v1/materials`, {
+        await fetch(`http://127.0.0.1:3000/api/v1/machines`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${authToken}`
           },
-          body: JSON.stringify(materialData),
+          body: JSON.stringify(machineData),
           credentials: 'include'
         });
         console.log('saved successfully');
@@ -56,15 +64,17 @@ export default {
     };
 
     const saveAndClose = async () => {
-      await saveMaterial();
-      await router.push({name: 'Materials'});
+      await saveMachine();
+      await router.push({name: 'Machines'});
     };
 
     return {
       name,
       type,
-      typeOptions,
-      saveMaterial,
+      maxWidth,
+      maxLength,
+      maxHeight,
+      saveMachine,
       saveAndClose,
     };
   }
