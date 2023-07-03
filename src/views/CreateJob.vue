@@ -188,7 +188,7 @@ export default {
 
         price.value =
           totalLength.value / selectedValue * 60 / 3600 * selectedMachine.value.rate +
-          contourCount.value * piercing * 60 / 3600 * selectedMachine.value.rate +
+          contourCount.value * piercing / 3600 * selectedMachine.value.rate +
           handling
       }
     });

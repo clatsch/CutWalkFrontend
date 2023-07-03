@@ -8,6 +8,7 @@ module.exports = {
     moduleNameMapper: {
         '^@views/(.*)$': '<rootDir>/src/views/$1',
         '^@models/(.*)$': '<rootDir>/src/models/$1',
+        '^@/(.*)$': '<rootDir>/src/$1',
     },
     transformIgnorePatterns: ['<rootDir>/node_modules/(?!vuetify)'],
 };
