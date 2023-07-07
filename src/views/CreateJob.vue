@@ -11,7 +11,7 @@
         <v-select
           v-model="selectedMachine"
           :hint="`${selectedMachine.name}, ${selectedMachine.type}`"
-          :items="machines"
+          :items="sortedMachines"
           item-value="name"
           item-title="type"
           label="Select a machine"
@@ -22,7 +22,7 @@
       <div v-if="selectedMachine">
         <v-select
           v-model="selectedMaterial"
-          :items="materials"
+          :items="sortedMaterials"
           item-value="_id"
           item-title="name"
           label="Select a material"
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import getMachines from "@/composables/machines/getMachines";
 import getCutOptionsByMachine from "@/composables/cutOptions/getCutOptionsByMachine";
@@ -111,6 +111,15 @@ export default {
     watch(selectedMaterial, () => {
       selectedCutOption.value = null;
       price.value = 0;
+    });
+
+    const sortedMachines = computed(() => {
+      return machines.value.slice().sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    // Create a computed property for sorted materials
+    const sortedMaterials = computed(() => {
+      return materials.value.slice().sort((a, b) => a.name.localeCompare(b.name));
     });
 
     const handleKeydown = () => {
@@ -250,7 +259,7 @@ export default {
       materials, selectedMaterial, errorMaterials,
       cutOptionsByMachine, errorCutOptionsByMachine, selectedCutOption,
       selectedQuality, generateLabel, isQualityOption,
-      handleKeydown, handleFileUpload, handleSubmit, cancel, error,
+      handleKeydown, handleFileUpload, handleSubmit, cancel, error, sortedMachines, sortedMaterials,
       price
     }
   }
