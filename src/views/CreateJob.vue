@@ -58,7 +58,7 @@
       <v-text-field v-if="jobName" v-model="tag" label="Tags" @keydown.enter.prevent="handleKeydown"></v-text-field>
       <v-row justify="center" align="center">
         <div v-for="tag in tags" :key="tag">
-          <v-chip>{{ tag }}</v-chip>
+          <v-chip class="mr-2">{{ tag }}</v-chip>
         </div>
       </v-row>
       <div class="my-4" v-if="selectedQuality">
