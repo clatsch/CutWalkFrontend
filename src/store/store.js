@@ -65,9 +65,9 @@ const store = createStore({
     getError: (state) => state.error,
     // ...other getters
   },
-  // plugins: [createPersistedState({
-  //   expires: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-  // })],
+  plugins: [createPersistedState({
+    expires: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+  })],
 });
 
 export default store;
