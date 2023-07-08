@@ -1,0 +1,49 @@
+= CutWalk - Frontend
+
+This repository contains the frontend code for CutWalk, an application for efficient calculation and ordering of waterjet cutting jobs.
+
+== Technologies Used
+* Vue.js
+* Vuex
+* Vue Router
+* Package https://www.npmjs.com/package/dxf-parser[dxf-parser]
+
+== Installation
+
+. Make sure you have Git and Node.js installed on your computer.
+. Open a command line interface (e.g., Terminal) and navigate to the directory where the repository should be saved.
+. Clone the frontend repository by running the following command::
+
+----
+git clone https://github.com/clatsch/CutWalkFrontend
+----
+
+[start=4]
+. Navigate into the cloned repository:
+
+----
+cd cutwalkfrontend
+----
+
+[start=5]
+. Install the required npm packages by running the following command within the repository:
+
+----
+npm install
+----
+
+If any errors occur during the installation of npm packages, please use the `--force` flag.
+
+[start=6]
+. Start the project by running the following command:
+
+----
+npm run dev
+----
+
+Once the application is successfully started, you can access the GUI via http://localhost:8000. The GUI is compatible with modern browsers such as Chrome, Firefox, Edge, and Safari.
+
+For the backend code, please refer to the https://github.com/clatsch/cutwalk[CutWalk Backend Repository].
+
+
+
